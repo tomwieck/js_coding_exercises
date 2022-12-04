@@ -4,6 +4,8 @@
  */
 export const sumDigits = (n) => {
   if (n === undefined) throw new Error("n is required");
+
+  return n.reduce((a, b) => a + b)
 };
 
 /**
@@ -17,10 +19,18 @@ export const sumDigits = (n) => {
 export const createRange = (start, end, step) => {
   if (start === undefined) throw new Error("start is required");
   if (end === undefined) throw new Error("end is required");
-  if (step === undefined)
-    console.log(
-      "FYI: Optional step parameter not provided. Remove this check once you've handled the optional step!"
-    );
+
+  const arr = [];
+
+  if (!step) {
+    step = 1;
+  }
+
+  for (let i = start; end >= i; i+= step) {
+    arr.push(i)
+  }
+
+  return arr;
 };
 
 /**
@@ -55,6 +65,34 @@ export const createRange = (start, end, step) => {
 export const getScreentimeAlertList = (users, date) => {
   if (users === undefined) throw new Error("users is required");
   if (date === undefined) throw new Error("date is required");
+
+  let totalScreenTime = 0;
+  const usersAbove100 = [];
+
+  // loop through users
+  users.map((u) => {
+    const screenTime = u.screenTime;
+
+    // loop through each users screen times
+    screenTime.map((s) => {
+
+      // check the date of the screen time against passed in date
+      if (s.date === date) {
+        // get all minute values 
+        const arrValues = Object.values(s.usage);
+
+        // add these minutes together
+        totalScreenTime = arrValues.reduce((a,b) => a + b);
+
+        // if over 100 minutes, add to usersAbove100 array
+        if (totalScreenTime > 100) {
+          usersAbove100.push(u.username);
+        }
+      }
+    })
+  })
+
+  return usersAbove100;
 };
 
 /**
@@ -69,6 +107,20 @@ export const getScreentimeAlertList = (users, date) => {
  */
 export const hexToRGB = (hexStr) => {
   if (hexStr === undefined) throw new Error("hexStr is required");
+
+  if (hexStr.indexOf('#') === 0) {
+    hexStr = hexStr.split('#')[1];
+  }
+
+  const hexParts = hexStr.match(/.{1,2}/g);
+
+  const decimalParts = hexParts.map((h) => {
+    return parseInt(h, 16);
+  })
+
+  const rgb = 'rgb(' + decimalParts.join() + ')';
+
+  return rgb;
 };
 
 /**
@@ -82,5 +134,65 @@ export const hexToRGB = (hexStr) => {
  * @param {Array} board
  */
 export const findWinner = (board) => {
+  //TO DO
   if (board === undefined) throw new Error("board is required");
+
+  const down = [
+    [[0,0], [0,1], [0,2]],
+    [[1,0], [1,1], [1,2]],
+    [[2,0], [2,1], [2,2]]
+  ];
+
+  const across = [
+    [[0,0], [1,0], [2,0]],
+    [[0,1], [1,1], [1,2]],
+    [[0,2], [1,2], [2,2]]
+  ]
+
+  const diagonal = [
+    [[0,0], [1,1], [2,2]], 
+    [[2,2], [1,1], [0,0]]
+  ]
+
+  const wins = down.concat(across, diagonal)
+
+  const xArr = [];
+  const oArr = [];
+
+  let xWin = false;
+  let oWin = false;
+
+  board.forEach((x, i) => {
+    x.forEach((y, j) => {
+      if (y === 'X') {
+        xArr.push([i, j])
+      }
+
+      if (y === '0') {
+        oArr.push([i,j])
+      }
+    });
+  });
+
+  // check if xArr || oArr match any values wins[i]
+
+  wins.map((i) => {
+    i.map((j) => {
+      if (JSON.stringify(xArr) === JSON.stringify(j)) {
+        console.log(oArr.includes(j));
+        xWin = true;
+      }
+      if (JSON.stringify(oArr) === JSON.stringify(j)) {
+        oWin = true; 
+      }
+    })
+  })
+
+  if (xWin && oWin) {
+    return 'XO?'
+  } else if (xWin) {
+    return 'X'
+  } else if (oWin) {
+    return 'O'
+  }
 };

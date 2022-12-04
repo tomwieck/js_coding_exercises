@@ -118,7 +118,6 @@ describe("createMatrix", () => {
   });
 });
 
-
 describe("areWeCovered", () => {
 
   /**
