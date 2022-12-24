@@ -2,9 +2,7 @@
 
 export function capitalize(word) {
   if (word === undefined) throw new Error("word is required");
-  const capitalized = word.charAt(0).toUpperCase() + word.slice(1);
-
-  return capitalized;
+  return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 export function generateInitials(firstName, lastName) {
@@ -14,9 +12,7 @@ export function generateInitials(firstName, lastName) {
   const initial1 = firstName.charAt(0).toUpperCase(); 
   const initial2 = lastName.charAt(0).toUpperCase(); 
 
-  const initials = initial1 + '.' + initial2;
-  
-  return initials;
+  return `${initial1}.${initial2}`;  
 }
 
 export function addVAT(originalPrice, vatRate) {

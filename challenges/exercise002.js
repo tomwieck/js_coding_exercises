@@ -14,21 +14,15 @@ export function getBusNumbers(people) {
   if (people === undefined) throw new Error("people is required");
 
   const bus = 40;
-  const minBuses = Math.ceil(people / bus)
-
-  return minBuses;
+  return Math.ceil(people / bus);
 }
 
 export function countSheep(arr) {
   if (arr === undefined) throw new Error("arr is required");
 
-  let sheep = 0;
+  arr = arr.filter((a) => a === 'sheep')
 
-  arr.forEach(animal => {
-    if (animal === "sheep") { sheep++; }
-  });
-
-  return sheep;
+  return arr.length;
 }
 
 export function hasMPostCode(person) {
